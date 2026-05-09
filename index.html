@@ -1133,6 +1133,61 @@ h1{font-size:clamp(32px,7vw,72px);line-height:.9;margin:10px 0 14px;
 .mini-siem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:10px 0}.mini-siem-card{background:#0b1020;color:#d1fae5;border:2px solid #34d399;border-radius:10px;padding:10px;font-family:'Share Tech Mono',monospace;font-size:12px;line-height:1.45}.cli-help-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:10px}.cli-help{background:#111;color:#fef3c7;border:2px solid #f59e0b;border-radius:10px;padding:8px;font-family:'Share Tech Mono',monospace;font-size:12px}.resolved-banner{background:#d1fae5!important;border:3px solid #10b981!important;border-radius:14px!important;padding:14px!important;margin:10px 0!important;color:#064e3b!important}.cert-preview{isolation:isolate!important}
 @media(max-width:780px){.ico{width:78px!important;min-height:88px!important}.ico .sym{font-size:34px!important}.ico .sym-wrap{width:54px!important;height:54px!important}.ico span,.ico b{font-size:11px!important}.icons{gap:10px!important;padding:10px!important}.mini-siem-grid,.cli-help-grid{grid-template-columns:1fr!important}}
 
+
+
+/* HOTFIX Mariana BS: ícones maiores + correção de tela preta */
+.hidden{display:none!important}
+.icons{
+  left:18px!important;
+  top:42px!important;
+  grid-template-columns:repeat(2,124px)!important;
+  gap:18px!important;
+}
+.ico{
+  width:118px!important;
+  min-height:116px!important;
+  height:116px!important;
+  padding:10px 8px!important;
+  border-radius:14px!important;
+}
+.ico span{
+  font-size:52px!important;
+  line-height:1!important;
+  filter:drop-shadow(3px 3px 2px rgba(0,0,0,.45));
+}
+.ico b{
+  display:block!important;
+  margin-top:6px!important;
+  font-size:13px!important;
+  line-height:1.12!important;
+  font-weight:900!important;
+  color:#111!important;
+  text-shadow:1px 1px 0 #fff,0 0 8px #fff!important;
+}
+#toast{
+  position:fixed!important;
+  right:18px!important;
+  bottom:58px!important;
+  z-index:999999!important;
+  max-width:min(360px,92vw)!important;
+  display:none;
+  background:#fff9df!important;
+  color:#111!important;
+  border:4px solid #111!important;
+  border-radius:14px!important;
+  padding:12px 14px!important;
+  box-shadow:6px 6px 0 #111!important;
+  font-weight:800!important;
+}
+#toast.show{display:block!important;animation:toastPop .18s ease-out}
+@keyframes toastPop{from{transform:translateY(12px);opacity:.4}to{transform:translateY(0);opacity:1}}
+@media(max-width:780px){
+  .icons{grid-template-columns:repeat(2,96px)!important;gap:12px!important;left:10px!important;top:32px!important}
+  .ico{width:92px!important;height:96px!important;min-height:96px!important}
+  .ico span{font-size:42px!important}
+  .ico b{font-size:11px!important}
+}
+
 </style>
 
 <style id="os-disaster-extra-css">
@@ -1292,7 +1347,7 @@ h1{font-size:clamp(32px,7vw,72px);line-height:.9;margin:10px 0 14px;
     <div class="tray">
       <span class="tray-icon" title="Antivírus: expirado">🛡️</span>
       <span class="tray-icon" title="Rede: conectado (infelizmente)">📡</span>
-      <button class="tray-icon" id="music-btn" title="Som mutado — clique para ligar" onclick="toggleMusic()" style="cursor:pointer;font-size:18px;background:transparent;border:0;padding:0">🔇</button>
+      <button class="tray-icon" id="music-btn" title="Som mutado — clique para ligar" style="cursor:pointer;font-size:18px;background:transparent;border:0;padding:0">🔇</button>
       <div class="clock-tray" id="clock">00:00<br>08/05/2026</div>
     </div>
   </div>
@@ -1387,7 +1442,15 @@ function drag(w){const bar=w.querySelector('.titlebar'); if(!bar)return; let on=
 function win(id,title,icon,body,opt={}){const wins=$('#wins'); if(!wins)return; let w=$('#win_'+id); if(w){const c=w.querySelector('.content'); if(c)c.innerHTML=body; focusWin(w); return w;} w=document.createElement('div'); w.className='window active-window'; w.id='win_'+id; w.dataset.id=id; const count=$$('#wins .window').length; w.style.width=opt.w||'min(920px,94vw)'; w.style.height=opt.h||'min(640px,80vh)'; w.style.left=(Math.max(8,70+(count*26)%180))+'px'; w.style.top=(Math.max(48,58+(count*22)%130))+'px'; w.innerHTML='<div class="titlebar"><span class="win-icon">'+icon+'</span><b>'+esc(title)+'</b><div class="win-btns"><button class="win-btn min-btn" data-cmd="min">_</button><button class="win-btn max-btn" data-cmd="max">□</button><button class="win-btn close-btn" data-cmd="close">×</button></div></div><div class="content">'+body+'</div><div class="win-statusbar"><span>D\'OH!Sec OS</span><span>'+esc(tracks[career]?.label||'Be Safe')+'</span></div>'; wins.appendChild(w); drag(w); focusWin(w); addTask(w); return w;}
 function addTask(w){const tasks=$('#tasks'); if(!tasks)return; const id=w.id.replace('win_',''); let b=$('#task_'+id); if(!b){b=document.createElement('button');b.id='task_'+id;b.className='task-btn';b.textContent=(w.querySelector('.win-icon')?.textContent||'🪟')+' '+(w.querySelector('.titlebar b')?.textContent||id).slice(0,20);tasks.appendChild(b);} }
 function controlWindow(btn){const w=btn.closest('.window'); if(!w)return; const id=w.id.replace('win_',''); const cmd=btn.dataset.cmd; if(cmd==='close'){w.remove(); const t=$('#task_'+id); if(t)t.remove(); return;} if(cmd==='min'){w.style.display='none'; addTask(w); return;} if(cmd==='max'){w.classList.toggle('maximized'); focusWin(w); return;}}
-function toast(title,msg){let e=$('#errordlg'); if(!e){e=document.createElement('div');e.id='errordlg';e.className='error-dlg';document.body.appendChild(e);} e.innerHTML='<b>'+esc(title)+'</b><br><span>'+esc(msg)+'</span>'; e.style.display='block'; setTimeout(()=>{e.style.display='none'},3200);}
+function toast(title,msg){
+ const t=document.getElementById('toast');
+ if(!t){ console.log(title,msg); return; }
+ t.innerHTML='<b>'+esc(title)+'</b><br><span>'+esc(msg)+'</span>';
+ t.classList.add('show');
+ t.style.display='block';
+ clearTimeout(window.__dohToastTimer);
+ window.__dohToastTimer=setTimeout(()=>{t.classList.remove('show');t.style.display='none';},2800);
+}
 function metrics(){const final=finalScore();return '<div class="metrics-line"><div class="metric">🛡️ Segurança '+score.security+'</div><div class="metric">🖥️ Estabilidade '+score.stability+'</div><div class="metric">🧠 Stress '+score.stress+'</div><div class="metric">🔥 Risco '+score.risk+'</div><div class="metric">🍩 Score '+final+'</div></div><div class="riskbar"><div class="riskfill" style="width:'+score.risk+'%"></div></div>';}
 function finalScore(){return clamp((score.security+score.stability+(100-score.stress)+(100-score.risk))/4);}
 function label(a){return ({terminal:'Terminal',logs:'Logs/Eventos',processes:'Processos',network:'Rede',permissions:'Permissões',updates:'Updates',siem:'Mini SIEM',goals:'Objetivos',case:'Mesa do Incidente',certificate:'Certificado'})[a]||a;}
@@ -1417,8 +1480,9 @@ function cert(){const done=tracks[career].inc.filter(id=>score.solved[id]).lengt
 function downloadCert(){const final=finalScore(); const learned=[...new Set(tracks[career].inc.flatMap(id=>incidents[id].skills))].slice(0,8); const c=document.createElement('canvas'); c.width=1800;c.height=1250; const x=c.getContext('2d'); x.fillStyle='#fff8dc';x.fillRect(0,0,c.width,c.height); const grd=x.createLinearGradient(0,0,1800,1250);grd.addColorStop(0,'#fffdf0');grd.addColorStop(.45,'#fff3b0');grd.addColorStop(1,'#ffd84d');x.fillStyle=grd;x.fillRect(70,70,1660,1110);x.strokeStyle='#111';x.lineWidth=18;x.strokeRect(70,70,1660,1110);x.strokeStyle='#ff4fb3';x.lineWidth=10;x.strokeRect(110,110,1580,1030);x.textAlign='center';x.fillStyle='#111';x.font='bold 86px Segoe UI';x.fillText("D'OH!Sec OS",900,205);x.font='bold 48px Segoe UI';x.fillText('Certificado Premium de Sistemas Operacionais para Cyber',900,285);x.font='bold 64px Segoe UI';x.fillStyle='#ff4fb3';x.fillText(player,900,390);x.fillStyle='#111';x.font='34px Segoe UI';wrap(x,'Concluiu o desafio guiado '+tracks[career].label+' com investigação em SIEM, logs, rede, terminal e resposta operacional.',900,465,1250,42);x.beginPath();x.arc(900,690,135,0,Math.PI*2);x.lineWidth=38;x.strokeStyle='#e3c989';x.stroke();x.beginPath();x.arc(900,690,135,-Math.PI/2,-Math.PI/2+Math.PI*2*(final/100));x.strokeStyle='#ff4fb3';x.stroke();x.fillStyle='#111';x.font='bold 48px Segoe UI';x.fillText(final+'/100',900,705);x.font='110px Segoe UI';x.fillText('🍩',1240,710);x.font='28px Segoe UI';wrap(x,'Competências: '+learned.join(' • '),900,870,1320,36);x.font='italic 52px cursive';x.fillText('Mariana BS — Instrutora',900,1050);x.font='26px Segoe UI';x.fillText(new Date().toLocaleDateString('pt-BR')+' • Be Safe Inc.',900,1110); const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='certificado-dohsec-os-premium.png';a.click();}
 function wrap(ctx,text,x,y,maxWidth,lineHeight){const words=text.split(' ');let line='';for(const w of words){const test=line+w+' ';if(ctx.measureText(test).width>maxWidth&&line){ctx.fillText(line,x,y);line=w+' ';y+=lineHeight;}else line=test;}ctx.fillText(line,x,y);}
 function startBoot(sound){
- audioOn=!!sound;
- try{ if(sound){ const AC=window.AudioContext||window.webkitAudioContext; if(AC){ const ctx=new AC(); const notes=[196,246,294,392,330]; notes.forEach((f,i)=>setTimeout(()=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='square';o.frequency.value=f;g.gain.value=.035;o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.13);},i*170)); } } }catch(e){console.warn('audio fallback',e)}
+ audioOn=false;
+ try{ if(sound && typeof startMusic==='function') startMusic(); else updateMusicButton(); }catch(e){ audioOn=false; updateMusicButton(); }
+ try{ if(false && sound){ const AC=window.AudioContext||window.webkitAudioContext; if(AC){ const ctx=new AC(); const notes=[196,246,294,392,330]; notes.forEach((f,i)=>setTimeout(()=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='square';o.frequency.value=f;g.gain.value=.035;o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.13);},i*170)); } } }catch(e){console.warn('audio fallback',e)}
  const log=$('#bootlog');
  if(log){log.innerHTML='';['POST Donut BIOS... OK','Carregando nuvens do Homer... OK','Inicializando Mini SIEM... OK','Montando /var/log/caos... OK','Terminal pronto para investigação... OK','Aviso: usuário ainda clica em PDF.exe'].forEach((l,i)=>setTimeout(()=>{const d=document.createElement('div');d.textContent=l;d.className=i===5?'warn':'ok';log.appendChild(d);log.scrollTop=log.scrollHeight;},i*220));}
  setTimeout(()=>{const boot=$('#boot'),login=$('#login'); if(boot)boot.style.display='none'; if(login)login.classList.add('show');},1700);
@@ -1431,16 +1495,67 @@ function showBsod(){const b=$('#bsod'); if(b)b.style.display='block';}
 function hideBsod(){const b=$('#bsod'); if(b)b.style.display='none';}
 function closeError(){const e=$('#errordlg'); if(e)e.style.display='none';}
 let __dohAudioCtx=null,__dohMusicTimer=null;
+function dohBeep(seq=[220,196,174,146], gain=.045){
+ try{
+   const AC=window.AudioContext||window.webkitAudioContext;
+   if(!AC)return;
+   __dohAudioCtx=__dohAudioCtx||new AC();
+   if(__dohAudioCtx.state==='suspended')__dohAudioCtx.resume();
+   seq.forEach((f,i)=>setTimeout(()=>{
+     const o=__dohAudioCtx.createOscillator();
+     const g=__dohAudioCtx.createGain();
+     o.type='square'; o.frequency.value=f; g.gain.value=gain;
+     o.connect(g); g.connect(__dohAudioCtx.destination);
+     o.start(); o.stop(__dohAudioCtx.currentTime+.16);
+   },i*120));
+ }catch(e){console.warn('audio indisponível',e)}
+}
+function updateMusicButton(){
+ const b=$('#music-btn');
+ if(!b)return;
+ b.textContent=audioOn?'🔊':'🔇';
+ b.setAttribute('aria-pressed', audioOn?'true':'false');
+ b.title=audioOn?'Som ligado — clique para desligar':'Som mutado — clique para ligar';
+}
+function stopMusic(){
+ audioOn=false;
+ if(__dohMusicTimer){clearInterval(__dohMusicTimer); __dohMusicTimer=null;}
+ try{ if(__dohAudioCtx && __dohAudioCtx.state==='running') __dohAudioCtx.suspend(); }catch(e){}
+ updateMusicButton();
+}
+function startMusic(){
+ audioOn=true;
+ updateMusicButton();
+ try{
+   if(__dohMusicTimer){clearInterval(__dohMusicTimer); __dohMusicTimer=null;}
+   const AC=window.AudioContext||window.webkitAudioContext;
+   if(AC){
+     __dohAudioCtx=__dohAudioCtx||new AC();
+     if(__dohAudioCtx.state==='suspended')__dohAudioCtx.resume();
+   }
+   dohBeep([196,247,294,196],.055);
+   let step=0;
+   __dohMusicTimer=setInterval(()=>{
+     if(!audioOn){clearInterval(__dohMusicTimer); __dohMusicTimer=null; return;}
+     const seq=[196,220,247,262,247,220,196,165];
+     dohBeep([seq[step++%seq.length]],.018);
+   },520);
+ }catch(e){console.warn('startMusic',e)}
+}
 function toggleMusic(){
- audioOn=!audioOn; const b=$('#music-btn'); if(b)b.textContent=audioOn?'🔊':'🔇';
- try{ const AC=window.AudioContext||window.webkitAudioContext; if(audioOn&&AC){ __dohAudioCtx=__dohAudioCtx||new AC(); let step=0; clearInterval(__dohMusicTimer); __dohMusicTimer=setInterval(()=>{ if(!audioOn||!__dohAudioCtx)return; const seq=[196,220,247,262,247,220]; const o=__dohAudioCtx.createOscillator(),g=__dohAudioCtx.createGain(); o.type='triangle'; o.frequency.value=seq[step++%seq.length]; g.gain.value=.018; o.connect(g); g.connect(__dohAudioCtx.destination); o.start(); o.stop(__dohAudioCtx.currentTime+.18);},480);} else {clearInterval(__dohMusicTimer);} }catch(e){}
- toast('Som',audioOn?'Ligado. Homer cantarola em espírito.':'Desligado.');
+ if(audioOn){
+   stopMusic();
+   toast('Som','Desligado. Homer voltou ao modo donut silencioso.');
+ }else{
+   startMusic();
+   toast('Som','Ligado. Homer fez D’OH em WebAudio.');
+ }
 }
 function handleButton(e){const b=e.target.closest('button,.ico,.sm-item,.task-btn'); if(!b)return; try{
  if(b.classList.contains('win-btn')){e.preventDefault();e.stopImmediatePropagation();return controlWindow(b);} if(b.id==='bootOn'||b.id==='bootOff'){e.preventDefault();e.stopImmediatePropagation();return startBoot(b.id==='bootOn');} if(b.id==='enter'){e.preventDefault();e.stopImmediatePropagation();return enter();} if(b.id==='start-btn'){e.preventDefault();e.stopImmediatePropagation();return $('#startmenu')?.classList.toggle('open');} if(b.id==='music-btn'){e.preventDefault();e.stopImmediatePropagation();return toggleMusic();}
  if(b.classList.contains('task-btn')){e.preventDefault();e.stopImmediatePropagation();return focusWin($('#win_'+b.id.replace('task_','')));} const assumeId=b.dataset.assume; if(assumeId){e.preventDefault();e.stopImmediatePropagation();return assume(assumeId);} const app=b.closest('[data-app]')?.dataset.app; if(app){e.preventDefault();e.stopImmediatePropagation();$('#startmenu')?.classList.remove('open');return openEvidence(app);} if(b.dataset.forceDecision){e.preventDefault();e.stopImmediatePropagation();return openCase(true);} if(b.dataset.decision){e.preventDefault();e.stopImmediatePropagation();return decide(b.dataset.decision);} if(b.dataset.runCli){e.preventDefault();e.stopImmediatePropagation();return runCli();} if(b.dataset.cliCmd){e.preventDefault();e.stopImmediatePropagation();return runCli(b.dataset.cliCmd);} if(b.dataset.runSiem){e.preventDefault();e.stopImmediatePropagation();return runSiem();} if(b.dataset.siemQuery){e.preventDefault();e.stopImmediatePropagation();return runSiem(b.dataset.siemQuery);} if(b.dataset.reset){e.preventDefault();e.stopImmediatePropagation();return reset();} if(b.dataset.downloadCert){e.preventDefault();e.stopImmediatePropagation();return downloadCert();}
  }catch(err){console.error(err);alert('Erro no botão: '+err.message);}}
-function installEvents(){document.addEventListener('pointerdown',handleButton,true);document.addEventListener('pointerdown',e=>{const w=e.target.closest('#wins .window'); if(w)focusWin(w);},true);document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target&&e.target.id==='cliInput'){e.preventDefault();runCli();} if(e.key==='Enter'&&e.target&&e.target.id==='siemInput'){e.preventDefault();runSiem();}},true); const chips=$('#chips'); if(chips){chips.addEventListener('pointerdown',e=>{const c=e.target.closest('.chip'); if(c){e.preventDefault();e.stopImmediatePropagation();$$('#chips .chip').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');}},true);}}
+function installEvents(){document.addEventListener('click',e=>{const b=e.target.closest('#music-btn'); if(b){e.preventDefault();e.stopImmediatePropagation();}},true);document.addEventListener('pointerdown',handleButton,true);document.addEventListener('pointerdown',e=>{const w=e.target.closest('#wins .window'); if(w)focusWin(w);},true);document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target&&e.target.id==='cliInput'){e.preventDefault();runCli();} if(e.key==='Enter'&&e.target&&e.target.id==='siemInput'){e.preventDefault();runSiem();}},true); const chips=$('#chips'); if(chips){chips.addEventListener('pointerdown',e=>{const c=e.target.closest('.chip'); if(c){e.preventDefault();e.stopImmediatePropagation();$$('#chips .chip').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');}},true);}}
 
 /* PATCH incremental: melhorar SIEM/CLI sem alterar layout */
 try{
@@ -1467,6 +1582,28 @@ try{
   'Get-LocalGroupMember':'fornecedor_temp em Domain Admins | Everyone em Remote Desktop Users'
  });
 }catch(e){console.warn('patch incidents commands',e)}
+
+
+
+/* HOTFIX: evita que qualquer erro JS deixe a tela preta/branca */
+window.addEventListener('error',ev=>{
+  console.error('DohSec error capturado:',ev.error||ev.message);
+  const boot=document.getElementById('boot'), login=document.getElementById('login'), desk=document.getElementById('desktop');
+  if(boot && getComputedStyle(boot).display!=='none'){
+    boot.style.display='none';
+    if(login)login.classList.add('show');
+  }
+  const t=document.getElementById('toast');
+  if(t){t.innerHTML='<b>Erro capturado</b><br><span>O sistema não caiu. Só reclamou igual o Homer.</span>';t.style.display='block';setTimeout(()=>t.style.display='none',2600);}
+});
+setTimeout(()=>{
+  const boot=document.getElementById('boot'), login=document.getElementById('login'), desk=document.getElementById('desktop');
+  if(boot && getComputedStyle(boot).display!=='none'){
+    // mantém boot visível; só garante que não ficou sem botões
+    const log=document.getElementById('bootlog');
+    if(log && !log.textContent.trim()) log.textContent='Sistema pronto. Clique em inicializar.';
+  }
+},500);
 
 installStyle(); setupChips(); installEvents();
 window.refreshDesktop=refreshDesktop;window.showProperties=showProperties;window.showBsod=showBsod;window.hideBsod=hideBsod;window.closeError=closeError;window.toggleMusic=toggleMusic;window.dohsecV18={openGoals,openCase,openEvidence,runCli,runSiem,cert,reset};
