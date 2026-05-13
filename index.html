@@ -1256,6 +1256,63 @@ h1{font-size:clamp(32px,7vw,72px);line-height:.9;margin:10px 0 14px;
 .cert-preview{background:linear-gradient(135deg,#fffdf2,#fff2bb)!important;border:8px solid #111!important;border-radius:22px!important;box-shadow:0 10px 35px #0003, inset 0 0 0 6px #ffd84d!important;text-align:center!important;padding:26px!important;margin:12px auto!important;max-width:680px!important}.cert-donut{font-size:74px}.cert-title{font-size:34px!important;font-weight:1000!important}.cert-name{font-size:38px!important;font-weight:1000!important;color:#ff4fb3!important}.cert-body{font-size:15px!important;line-height:1.5!important;margin:10px 0!important}.cert-sign{font-size:28px!important;font-family:cursive!important;margin-top:18px!important}
 @media(max-width:700px){.skill-grid,.case-flow{grid-template-columns:1fr!important}.guided-card,.case-step{box-shadow:2px 2px 0 #111!important}.window{max-width:calc(100vw - 12px)!important}.content{padding:10px!important}}
 </style>
+
+
+<style id="fix-start-menu-upward-v19">
+/* Correção do botão Iniciar: o menu agora nasce ancorado na taskbar e abre para cima.
+   O problema era o .os-menu-pop interno com position:fixed solto, fazendo o menu se comportar como pop-up fora do container. */
+.startmenu{
+  position:fixed!important;
+  left:4px!important;
+  right:auto!important;
+  bottom:var(--taskbar-h)!important;
+  top:auto!important;
+  width:340px!important;
+  max-width:calc(100vw - 8px)!important;
+  max-height:calc(100dvh - var(--taskbar-h) - 10px)!important;
+  overflow:auto!important;
+  display:none!important;
+  z-index:7600!important;
+}
+.startmenu.open{
+  display:block!important;
+}
+.startmenu .os-menu-pop{
+  position:static!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  max-height:none!important;
+  overflow:visible!important;
+  box-shadow:none!important;
+  border:0!important;
+  border-radius:0!important;
+}
+@media(max-width:780px){
+  .startmenu{
+    left:6px!important;
+    right:6px!important;
+    bottom:48px!important;
+    top:auto!important;
+    width:calc(100vw - 12px)!important;
+    max-width:calc(100vw - 12px)!important;
+    max-height:calc(100dvh - 58px)!important;
+    overflow:auto!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  .startmenu .os-menu-pop{
+    position:static!important;
+    width:100%!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+}
+</style>
+
 </head>
 <body>
 
